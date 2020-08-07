@@ -6,9 +6,9 @@ shellcheck:
 	$(ROOT_DIR)/tools/shellcheck -e SC1091 \
 	                             jenkins-support \
 	                             *.sh
-build: build-debian build-alpine build-slim build-jdk11 build-centos build-centos7 build-openj9 build-openj9-jdk11
+build: build-focal-fossa build-alpine build-slim build-jdk11 build-centos build-centos7 build-openj9 build-openj9-jdk11
 
-build-debian:
+build-focal-fossa:
 	docker build --file Dockerfile .
 
 build-alpine:
@@ -66,7 +66,8 @@ test-openj9:
 test-openj9-jdk11:
 	DOCKERFILE=Dockerfile-openj9-jdk11 bats/bin/bats tests
 
-test: test-debian test-alpine test-slim test-jdk11 test-centos test-centos7 test-openj9 test-openj9-jdk11
+
+test: test-debian test-alpine test-slim test-jdk11 test-centos test-centos7 test-openj9 test-openj9-jdk11 
 
 test-install-plugins: prepare-test
 	DOCKERFILE=Dockerfile-alpine bats/bin/bats tests/install-plugins.bats
@@ -84,7 +85,8 @@ publish-experimental:
 	./publish-experimental.sh --variant alpine ; \
 	./publish-experimental.sh --variant slim ; \
 	./publish-experimental.sh --variant openj9 ; \
-	./publish-experimental.sh --variant openj9-jdk11 ;
+	./publish-experimental.sh --variant openj9-jdk11 ; 
+	
 
 clean:
 	rm -rf tests/test_helper/bats-*; \

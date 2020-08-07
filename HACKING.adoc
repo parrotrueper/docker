@@ -8,6 +8,9 @@ Build with the usual
 
     docker build -t jenkins/jenkins .
 
+or
+    docker build . -t jenkins/jenkins:tag_name -f Dockerfile-whatever
+
 Tests are written using `https://github.com/sstephenson/bats[bats]` under the `tests` dir
 
     DOCKERFILE=Dockerfile bats tests
