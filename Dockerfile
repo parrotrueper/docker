@@ -27,10 +27,6 @@ RUN apt-get update && \
     unzip
 
 
-## Install git lfs on Debian stretch per https://github.com/git-lfs/git-lfs/wiki/Installation#debian-and-ubuntu
-## Avoid JENKINS-59569 - git LFS 2.7.1 fails clone with reference repository
-#RUN apt-get update && apt-get upgrade -y && apt-get install -y git curl && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && apt-get install -y git-lfs && git lfs install && rm -rf /var/lib/apt/lists/*
-
 ARG user=jenkins
 ARG group=jenkins
 ARG uid=1000
@@ -51,7 +47,6 @@ RUN mkdir -p $JENKINS_HOME \
   && chown ${uid}:${gid} $JENKINS_HOME \
   && groupadd -g ${gid} ${group} \
   && useradd -d "$JENKINS_HOME" -u ${uid} -g ${gid} -s /bin/bash ${user}
-  #&& useradd -d "$JENKINS_HOME" -u ${uid} -g ${gid} -m -s /bin/bash ${user}
 
 # Jenkins home directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades
@@ -64,7 +59,6 @@ RUN mkdir -p ${REF}/init.groovy.d
 
 # Use tini as subreaper in Docker container to adopt zombie processes
 # Advantage of tini: https://github.com/krallin/tini/issues/8
-#ARG TINI_VERSION=v0.16.1
 ARG TINI_VERSION=v0.19.0
 COPY tini_pub.gpg ${JENKINS_HOME}/tini_pub.gpg
 RUN curl -fsSL https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static-$(dpkg --print-architecture) -o /sbin/tini \
@@ -75,13 +69,12 @@ RUN curl -fsSL https://github.com/krallin/tini/releases/download/${TINI_VERSION}
   && chmod +x /sbin/tini
 
 # jenkins version being bundled in this docker image
+# https://www.jenkins.io/download/
 ARG JENKINS_VERSION
-#ENV JENKINS_VERSION ${JENKINS_VERSION:-2.176.2}
-ENV JENKINS_VERSION ${JENKINS_VERSION:-2.235.3}
+ENV JENKINS_VERSION ${JENKINS_VERSION:-2.235.5}
 
 # jenkins.war checksum, download will be validated using it
-#ARG JENKINS_SHA=33a6c3161cf8de9c8729fd83914d781319fd1569acf487c7b1121681dba190a5
-ARG JENKINS_SHA=e88642a2b52fc26ffa4425a0aba65163f083d770e5ef7182b2e32de41ff33981
+ARG JENKINS_SHA=c786f7b18fd3fc1bafce85b3b9bc5d8c5f09e3a313cfd618bae8c1d920b6f70b
 
 # Can be used to customize where jenkins.war get downloaded from
 ARG JENKINS_URL=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${JENKINS_VERSION}/jenkins-war-${JENKINS_VERSION}.war

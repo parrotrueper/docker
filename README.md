@@ -1,5 +1,5 @@
 # Fork of the Official Jenkins Docker image 
-# To add image based on Focal-Fossa
+# With an image based on Focal-Fossa
 
 
 [![Docker Stars](https://img.shields.io/docker/stars/jenkins/jenkins.svg)](https://hub.docker.com/r/jenkins/jenkins/)

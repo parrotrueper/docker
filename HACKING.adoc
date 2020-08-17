@@ -9,7 +9,7 @@ Build with the usual
     docker build -t jenkins/jenkins .
 
 or
-    docker build . -t jenkins/jenkins:tag_name -f Dockerfile-whatever
+    docker build -t jenkins/jenkins:tag_name -f Dockerfile-flavour
 
 Tests are written using `https://github.com/sstephenson/bats[bats]` under the `tests` dir
 
